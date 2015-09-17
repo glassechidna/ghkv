@@ -23,6 +23,13 @@ parameter (e.g. `https://git.example.com/api/v3`) or put it in
 
 ## CLI
 
+Tip: Put the following in your `~/.bash_profile` for quicker usage:
+
+```
+# ~/.bash_profile
+export GHKV_TOKEN=somehexvalue
+```
+
 ```
 $ ghkv
 Usage:
