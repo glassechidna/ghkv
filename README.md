@@ -1,36 +1,46 @@
 # Ghkv
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/ghkv`. To experiment with that code, run `bin/console` for an interactive prompt.
+`ghkv` is a gem (and corresponding CLI tool) to allow for quick and dirty
+persistence when you really can't be bothered spining up a Redis instance.
 
-TODO: Delete this and the text above, and describe your gem
-
-## Installation
-
-Add this line to your application's Gemfile:
+## Gem
 
 ```ruby
-gem 'ghkv'
+require 'ghkv'
+
+# token will be read from ENV['GHKV_TOKEN'] if not passed in
+kv = Ghkv::Ghkv.new repo: 'consumer-data/github_build_notifier', token: '<some hex>'
+kv['key'] = { "some" => "hash" }
+kv['key'] # => { "some" => "hash" }
+kv.keys # => ["some"]
+# kv.delete 'key'
+kv.save
 ```
 
-And then execute:
+If your repo is hosted on GitHub enterprise, you can pass in an `api_url`
+parameter (e.g. `https://git.example.com/api/v3`) or put it in
+`ENV['GHKV_API_URL']`.
 
-    $ bundle
+## CLI
 
-Or install it yourself as:
+```
+$ ghkv
+Usage:
+    ghkv [OPTIONS] SUBCOMMAND [ARG] ...
 
-    $ gem install ghkv
+Parameters:
+    SUBCOMMAND                    subcommand
+    [ARG] ...                     subcommand arguments
 
-## Usage
+Subcommands:
+    get                           Get value from KV and print to stdout
+    set                           Pass in value to store in KV by parameter or from stdin
+    list                          List all keys in KV, one per line
+    delete                        Delete key from KV
 
-TODO: Write usage instructions here
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/ghkv.
-
+Options:
+    --repo REPO                   Qualified (user/repo) repo name
+    --token TOKEN                 GitHub API token (default: $GHKV_TOKEN)
+    --api API                     Base URL for enterprise GitHub (default: $GHKV_API_URL)
+    -h, --help                    print help
+```
