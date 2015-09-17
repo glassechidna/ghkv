@@ -9,7 +9,7 @@ persistence when you really can't be bothered spining up a Redis instance.
 require 'ghkv'
 
 # token will be read from ENV['GHKV_TOKEN'] if not passed in
-kv = Ghkv::Ghkv.new repo: 'consumer-data/github_build_notifier', token: '<some hex>'
+kv = Ghkv::Ghkv.new repo: 'glassechidna/sneaky-repo', token: '<some hex>'
 kv['key'] = { "some" => "hash" }
 kv['key'] # => { "some" => "hash" }
 kv.keys # => ["some"]
